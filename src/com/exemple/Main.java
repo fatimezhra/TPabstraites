@@ -1,29 +1,45 @@
 package com.exemple;
 
+import java.util.Scanner;
+
 public class Main {
+
     public static void main(String[] args) {
-        FileSystem fs = new FileSystem();
 
-       
-        FileItem f1 = new FileItem("doc.txt", 1200);
-        FileItem f2 = new FileItem("image.png", 450000);
-        FileItem f3 = new FileItem("notes.pdf", 80000);
+        FileSystem system = new FileSystem();
 
-     
-        Directory home = new Directory("home");
-        home.add(f1);
-        home.add(f2);
+        Directory root = createStructure();
+        system.addRoot(root);
 
-        Directory docs = new Directory("docs");
-        docs.add(f3);
-        home.add(docs);
+        interact(system);
+    }
 
-        fs.addRoot(home);
-        fs.addRoot(new FileItem("readme.md", 3000));
+    private static Directory createStructure() {
 
-      
-        fs.listAll();
-        System.out.println("Taille totale : " 
-            + fs.totalSize() + " B");
+        Directory mainFolder = new Directory("principal");
+
+        FileItem fileA = new FileItem("rapport.docx", 2000);
+        FileItem fileB = new FileItem("photo.jpg", 350000);
+
+        Directory subFolder = new Directory("documents");
+        subFolder.add(new FileItem("cv.pdf", 50000));
+
+        mainFolder.add(fileA);
+        mainFolder.add(fileB);
+        mainFolder.add(subFolder);
+
+        return mainFolder;
+    }
+
+    private static void interact(FileSystem system) {
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("=== Contenu du système ===");
+        system.listAll();
+
+        System.out.println("\nTaille totale actuelle : " + system.totalSize() + " B");
+
+        scanner.close();
     }
 }
